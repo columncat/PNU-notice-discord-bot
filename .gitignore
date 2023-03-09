@@ -1,0 +1,9 @@
+# private
+app_private.py
+
+# dynamic files
+*.txt
+*.csv
+
+# cache
+__pycache__/
