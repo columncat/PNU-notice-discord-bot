@@ -1,6 +1,9 @@
 # private
 app_private.py
 
+# unused
+unused/
+
 # dynamic files
 *.txt
 *.csv

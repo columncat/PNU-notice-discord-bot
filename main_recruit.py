@@ -1,13 +1,12 @@
-# pip install yfinance, tabulate
 import requests
 import os.path
-from app_private import eec_channel
+from app_private import main_recruit_channel
 from bs4 import BeautifulSoup
 
 
-INDEX_FILE = "eec_recent.txt"
-NOTICE_URL = "https://eec.pusan.ac.kr/bbs/eehome/2650/rssList.do?row=50"
-CHANNEL_ID = eec_channel
+INDEX_FILE = "main_recruit.txt"
+NOTICE_URL = "https://www.pusan.ac.kr/kor/CMS/Board/Board.do?mCode=MN103"
+CHANNEL_ID = main_recruit_channel
 QUEUE_FILE = "push_queue.csv"
 
 
@@ -35,14 +34,15 @@ def __get_soup(url):
 
 def __check_notice(current):
     global NOTICE_URL
-    items = __get_soup(NOTICE_URL).select('item')
+    items = __get_soup(NOTICE_URL).select('td.subject')
     updates = []
     for item in items:
-        title = item.select_one("title").next_element
-        link = item.select_one("link").next_element
-        num = (int)(link.split('/')[-2])
+        title = item.select_one("a").text.strip()
+        link = NOTICE_URL.split('?')[0] + item.select_one("a").attrs["href"]
+        num = (int)(link.split('=')[-1])
         if current < num:
-            updates.append([title.replace("\"", "\'"), link, num])
+            updates.append([title.replace("\"", "\'").replace(
+                "[", "{").replace("]", "}"), link, num])
     return updates
 
 

@@ -4,7 +4,7 @@ from app_private import mec_channel
 from bs4 import BeautifulSoup
 
 
-INDEX_FILE = "mec_recent.txt"
+INDEX_FILE = "mec_notice.txt"
 NOTICE_URL = "https://me.pusan.ac.kr/new/sub05/sub01_01.asp"
 CHANNEL_ID = mec_channel
 QUEUE_FILE = "push_queue.csv"
@@ -46,7 +46,7 @@ def __check_notice(current):
 def __get_title(num):
     url = f'https://me.pusan.ac.kr/new/sub05/sub01_01.asp?seq={num.__str__()}&db=hakbunotice&page=1&perPage=20&SearchPart=BD_SUBJECT&SearchStr=&page_mode=view'
     title = __get_soup(url).select_one(
-        "div.board-view").select_one("dd").text.strip().replace('\"', '\'')
+        "div.board-view").select_one("dd").text.strip().replace('\"', '\'').replace("[", "{").replace("]", "}")
     return title
 
 
