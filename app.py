@@ -4,6 +4,8 @@ from app_private import token
 import os.path
 import csv
 import mec_notice
+import mec_graduate
+import mec_scholarship
 import main_notice
 import main_recruit
 import main_scholar
@@ -27,6 +29,8 @@ def __read_csv(path):
 
 def update_all():
     mec_notice.update()
+    mec_graduate.update()
+    mec_scholarship.update()
     main_notice.update()
     main_recruit.update()
     main_scholar.update()
