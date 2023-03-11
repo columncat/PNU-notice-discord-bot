@@ -9,6 +9,7 @@ import mec_scholarship
 import main_notice
 import main_recruit
 import main_scholar
+import job_recruit
 import main_schedule
 bot = commands.Bot(command_prefix='#', intents=discord.Intents.all())
 
@@ -34,6 +35,7 @@ def update_all():
     main_notice.update()
     main_recruit.update()
     main_scholar.update()
+    job_recruit.update()
     main_schedule.update()
 
 

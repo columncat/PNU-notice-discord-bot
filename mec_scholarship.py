@@ -60,7 +60,7 @@ def update():
         queue = ""
         for update in updates:
             title = __get_title(update)
-            url = f'https://me.pusan.ac.kr/new/sub05/sub01_01.asp?seq={update.__str__()}&db=hakbunotice&page=1&perPage=20&SearchPart=BD_SUBJECT&SearchStr=&page_mode=view'
+            url = f'https://me.pusan.ac.kr/new/sub05/sub01_05.asp?seq={update.__str__()}&db=supervision&page=1&perPage=20&SearchPart=BD_SUBJECT&SearchStr=&page_mode=view'
             queue += f'{CHANNEL_ID},"{title}", {url}\n'
         __write_file(QUEUE_FILE, "a", queue)
         __write_file(INDEX_FILE, "w", updates[0].__str__())
