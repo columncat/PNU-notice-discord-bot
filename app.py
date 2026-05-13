@@ -29,27 +29,27 @@ show_debug = False
 def time_to_str(time: time.struct_time) -> str:
     def int_to_str(num: int):
         return ('0' if num < 10 else '') + str(num)
-    yr:str = str(time.tm_year)
+    yr :str = str(time.tm_year)
     mon:str = int_to_str(time.tm_mon)
     day:str = int_to_str(time.tm_mday)
-    hr:str = int_to_str(time.tm_hour if time.tm_hour <= 12 else time.tm_hour - 12)
+    hr :str = int_to_str(time.tm_hour if time.tm_hour <= 12 else time.tm_hour - 12)
     min:str = int_to_str(time.tm_min)
     ampm:str = 'AM' if time.tm_hour < 12 else 'PM'
     return f'{yr}-{mon}-{day} {hr}:{min} {ampm}'
 
-def read_csv(path:str):
-    content = []
+def read_csv(path:str) -> List[List[str]]:
+    content:List[List[str]] = []
     if not os.path.isfile(path):
         return content
     with open(path, 'r') as file:
-        reader = csv.reader(file)
+        reader:csv.reader = csv.reader(file)
         for row in reader:
             if len(row) == 3:
                 content.append(row)
     return content
 
 def update_all() -> int:
-    count = 0
+    count:int = 0
     count += mec_notice.update()
     count += mec_graduate.update()
     count += mec_scholarship.update()
@@ -100,7 +100,6 @@ async def on_ready():
     channel = bot.get_channel(test_channel)
     debug_status = 'on' if show_debug else 'off'
     await channel.send(f'started bot: {time_to_str(alivetime)}, debug: {debug_status}')
-
 
 @bot.event
 async def on_message(message):

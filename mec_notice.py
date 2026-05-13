@@ -1,11 +1,14 @@
 import requests
+import urllib3
 import os.path
 from app_private import mec_channel
 from bs4 import BeautifulSoup
 
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 
 INDEX_FILE = "mec_notice.txt"
-NOTICE_URL = "https://me.pusan.ac.kr/new/sub05/sub01_01.asp"
+NOTICE_URL = "https://me.pusan.ac.kr/new/sub05/sub01_01.php"
 CHANNEL_ID = mec_channel
 QUEUE_FILE = "push_queue.csv"
 
@@ -27,7 +30,7 @@ def __read_file(path):
 
 
 def __get_soup(url):
-    res = requests.get(url)
+    res = requests.get(url, verify=False)
     soup = BeautifulSoup(res.text, 'html.parser')
     return soup
 
@@ -44,9 +47,9 @@ def __check_notice(current):
 
 
 def __get_title(num):
-    url = f'https://me.pusan.ac.kr/new/sub05/sub01_01.asp?seq={num.__str__()}&db=hakbunotice&page=1&perPage=20&SearchPart=BD_SUBJECT&SearchStr=&page_mode=view'
+    url = f'https://me.pusan.ac.kr/new/sub05/sub01_01.php?seq={num.__str__()}&db=hakbunotice&page=1&perPage=20&SearchPart=BD_SUBJECT&SearchStr=&page_mode=view'
     title = __get_soup(url).select_one(
-        "div.board-view").select_one("dd").text.strip().replace('\"', '\'').replace("[", "{").replace("]", "}")
+        "div.board-view").select_one("dd").text.strip().replace('\"', '\'')
     return title
 
 
@@ -60,10 +63,11 @@ def update():
         queue = ""
         for update in updates:
             title = __get_title(update)
-            url = f'https://me.pusan.ac.kr/new/sub05/sub01_01.asp?seq={update.__str__()}&db=hakbunotice&page=1&perPage=20&SearchPart=BD_SUBJECT&SearchStr=&page_mode=view'
+            url = f'https://me.pusan.ac.kr/new/sub05/sub01_01.php?seq={update.__str__()}&db=hakbunotice&page=1&perPage=20&SearchPart=BD_SUBJECT&SearchStr=&page_mode=view'
             queue += f'{CHANNEL_ID},"{title}", {url}\n'
         __write_file(QUEUE_FILE, "a", queue)
         __write_file(INDEX_FILE, "w", updates[0].__str__())
+    return len(updates)
 
 
 if __name__ == "__main__":

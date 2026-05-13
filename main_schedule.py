@@ -44,8 +44,7 @@ def __check_notice(current):
             detail = item.select_one("td").text
             if current == detail:
                 return []
-            updates.append([f'{head} : {detail}'.replace("\"", "\'").replace(
-                "[", "{").replace("]", "}"), "empty", detail])
+            updates.append([f'{head} : {detail}'.replace("\"", "\'"), "empty", detail])
     return updates
 
 
@@ -61,6 +60,7 @@ def update():
             queue += f'{CHANNEL_ID},"{title}",{url}\n'
         __write_file(QUEUE_FILE, "a", queue)
         __write_file(INDEX_FILE, "w", updates[-1][2])
+    return len(updates)
 
 
 if __name__ == "__main__":

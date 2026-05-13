@@ -41,8 +41,7 @@ def __check_notice(current):
         link = NOTICE_URL.split('?')[0] + item.select_one("a").attrs["href"]
         num = (int)(link.split('=')[-1])
         if current < num:
-            updates.append([title.replace("\"", "\'").replace(
-                "[", "{").replace("]", "}"), link, num])
+            updates.append([title.replace("\"", "\'"), link, num])
     return updates
 
 
@@ -58,6 +57,7 @@ def update():
             queue += f'{CHANNEL_ID},"{title}",{url}\n'
         __write_file(QUEUE_FILE, "a", queue)
         __write_file(INDEX_FILE, "w", updates[0][2].__str__())
+    return len(updates)
 
 
 if __name__ == "__main__":
